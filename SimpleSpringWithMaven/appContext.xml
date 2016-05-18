@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+<context:property-placeholder location="src/main/java/application.properties"/>
+
+<!-- Configuring bean with default constructor -->
+<bean id="fruit" class="org.kk.application.Fruit" />
+<bean id="vegetable" class="org.kk.application.Vegetable" />
+
+<!-- Configuring bean with non default constructor -->
+<bean id="fruitName" class="org.kk.application.Fruit" >
+<constructor-arg index="0" value="Apple"></constructor-arg>
+</bean>
+
+<!-- Setting bean properties -->
+<bean id="vegetableWithName" class="org.kk.application.Vegetable" >
+<property name="vegetableName" value="Carrot"></property>
+</bean>
+
+<!-- Setting bean properties with List and Map-->
+<bean id="vegetableNameListMap" class="org.kk.application.Vegetable" >
+<property name="vegetableNameList">
+<list>
+<value>Carrot</value>
+<value>Tomato</value>
+<value>Brocle</value>
+</list>
+</property>
+<property name="vegetableNameMap">
+<map>
+<entry key="Carrot" value="Red" />
+<entry key="Tomato" value="Dark Red" />
+<entry key="Brocle" value="Green" />
+</map>
+</property>
+</bean>
+
+<!-- Setting bean properties with Pname space-->
+<bean id="fruitWithPNameSpace" class="org.kk.application.Fruit" p:fruitColor="Red"/>
+
+<!-- Configuring Spring Beans with Setter/Dependency Injection -->
+<bean id="grain" class="org.kk.application.Grain" />
+<bean id="salad" class="org.kk.application.Salad" />
+<bean id="meal" class="org.kk.application.Meal" >
+<property name="grain" ref="grain"></property>
+<property name="salad" ref="salad"></property>
+</bean>
+
+<!-- Configuring Spring Beans with Constructor Injection -->
+<bean id="mealWithConstructor" class="org.kk.application.Meal" >
+<constructor-arg index="0" ref="grain"></constructor-arg>
+<constructor-arg index="1" ref="salad"></constructor-arg>
+</bean>
+
+<!-- Configuring Spring Bean Property with External Properties file -->
+<bean id="grainWithProp" class="org.kk.application.Grain" >
+<property name="grain_def" value="${grain_defination}"></property>
+</bean>
+
+<!-- Outer and Inner Beans -->
+<bean id="sauce" class="org.kk.application.Sause"/>
+<bean id="outterMeal" class="org.kk.application.Meal">
+<property name="sauce">
+<bean id="innertopping" class="org.kk.application.Topping">
+<property name="name" value="RANCH"></property>
+</bean>
+</property>
+</bean>
+
+<!-- Initializing Bean with Explict init and destroy methods -->
+<bean id="saladWithInitDest" class="org.kk.application.Salad" init-method="initCall" destroy-method="destroyCall" />
+
+<!-- Autowiring byName -->
+<bean id="mealWithAutoWiring" class="org.kk.application.Meal" autowire="byName"> </bean>
+
+<!-- Autowiring Constructor -->
+<bean id="mealWithAutoWiringCons" class="org.kk.application.Meal" autowire="constructor"> </bean>
+
+</beans>
